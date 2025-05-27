@@ -1,6 +1,10 @@
 {
     "files.associations": {
         "algorithm": "cpp",
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "iostream": "cpp",
+        "vector": "cpp",
+        "utility": "cpp",
+        "unordered_map": "cpp"
     }
 }

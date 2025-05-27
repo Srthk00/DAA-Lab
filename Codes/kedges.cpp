@@ -4,58 +4,20 @@
 #include <queue>
 using namespace std;
 
-// int kedges(vector<vector<pair<int,int>>>& graph,int s,int d,vector<int> &visited,int k){
-//     queue<int> que;
-//     que.push(s);
-//     int cost=0;
-//     while(!que.empty()){
-//         int SIZE=que.size();
-//         if(k==0){
-//             return cost;
-//         }
-//         while(SIZE>0){
-            
-//         }
-//     }
-// }
+int minCost=INT_MAX;
 
-// static int sum=0;
-
-// void kedges(vector<vector<pair<int,int>>>& graph,int s,pair<int,int> d,vector<int> &visited,vector<int> &pathvisit,int k){
-//     visited[s]=1;
-//     pathvisit[s]=1;
-//     k--;
-//     if(k==0 && s==d.first){
-//         cost.push_back(sum);
-//         sum-=d.second;
-//         return;
-//     }
-//     else if(k==0 && s!=d.first){
-//         sum-=d.second;
-//         return;
-//     }
-//     for(auto &it:graph[s]){
-//         if(!visited[it.first]){
-            
-//         }
-//     }
-// }
-
-vector<int> cost;
-
-int kedges(vector<vector<pair<int,int>>> &graph,int k,int s,int d,int sum,vector<int> &path){
-    path[s]=1;
+void kedges(vector<vector<pair<int,int>>> &graph,int k,int s,int d,int sum){
+    if(k<0)
+        return;
     if(s==d && k==0){
-        cost.push_back(sum);
-        path[s]=0;
-        return 0;
+        minCost=min(minCost,sum);
+        return;
     }
-    k--;
     for(auto &it:graph[s]){
-        sum+=it.second;
-        kedges(graph,k,it.first,d,sum,path);
+        int next=it.first;
+        int weight=it.second;
+        kedges(graph,k-1,next,d,sum+weight);
     }
-    path[s]=0;
 }
 
 int main(){
@@ -72,8 +34,9 @@ int main(){
     int source,dest,k;
     cout << "Enter source node, destination node, and k: ";
     cin >> source >> dest >> k;
-    vector<int> visited(v,0);
-    vector<int> pathvisit(v,0);
-    
+    if (minCost == INT_MAX)
+        cout << "No path exists from " << source << " to " << dest << " with exactly " << k << " edges." << endl;
+    else
+        cout << "Shortest path cost from " << source << " to " << dest << " with exactly " << k << " edges: " << minCost << endl;
     return 0;
 }
