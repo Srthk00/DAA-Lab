@@ -53,8 +53,8 @@ void build_sum(int i,vector<int> &nums,vector<int> &segtree,int L,int R){
     }
     else{
         int mid=(L+R)/2;
-        build_max(2*i+1,nums,segtree,L,mid);
-        build_max(2*i+2,nums,segtree,mid+1,R);
+        build_sum(2*i+1,nums,segtree,L,mid);
+        build_sum(2*i+2,nums,segtree,mid+1,R);
         segtree[i]=segtree[2*i+1]+segtree[2*i+2];
     }
 }
@@ -67,8 +67,8 @@ int find_sum(int i,int a,int b,vector<int> &segtree,int L,int R){
         return segtree[i];
     }
     int mid=(L+R)/2;
-    int fromleft=find_max(2*i+1,a,b,segtree,L,mid);
-    int fromright=find_max(2*i+1+2,a,b,segtree,mid+1,R);
+    int fromleft=find_sum(2*i+1,a,b,segtree,L,mid);
+    int fromright=find_sum(2*i+1+2,a,b,segtree,mid+1,R);
     return fromleft+fromright;
 }
 
@@ -97,16 +97,16 @@ int main(){
         cin >> val;
         nums.push_back(val);
     }
-    vector<int> segtree(n);
+    int a,b;
+    int idx,v;
+    vector<int> segtree(4*n);
 
     build_max(0,nums,segtree,0,n-1); // starting node(0), main array, segment tree array, starting and ending range of array
 
-    int a,b;
     cout << "Enter starting and ending point of serach for max element: "; // input for query (indexes)
     cin >> a >> b;
-    cout << "Max element in range: ",a,"-",b,": ",find_max(0,a,b,segtree,0,n-1);
+    cout << "Max element in range: " << a << "-" << b << ": " << find_max(0,a,b,segtree,0,n-1);
 
-    int idx,v;
     cout << "Enter index where changes are to be made: ";
     cin >> idx;
     cout << "Enter increment: ";
@@ -115,17 +115,15 @@ int main(){
 
     build_sum(0,nums,segtree,0,n-1);
 
-    int a,b;
     cout << "Enter starting and ending point to find sum of elements in that range: "; // input for query (indexes)
     cin >> a >> b;
-    cout << "Sum of elements in range: ",a,"-",b,": ",find_sum(0,a,b,segtree,0,n-1);
+    cout << "Sum of elements in range: " << a << "-" << b << ": " << find_sum(0,a,b,segtree,0,n-1);
 
-    int idx,v;
     cout << "Enter index where changes are to be made: ";
     cin >> idx;
     cout << "Enter increment: ";
     cin >> v;
     update_sum(0,0,n-1,idx,v,segtree);
-
+    
     return 0;
 }
